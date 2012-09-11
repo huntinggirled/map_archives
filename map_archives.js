@@ -8,6 +8,7 @@
 	jQuery('#footer')
 	.css('position', 'relative')
 	;
+
 	jQuery('body').append(
 		'<div id="sidenavi">'
 		+'<div>ƒ\[ƒg <input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">ŠÔ</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">‹——£</a></div>'
@@ -125,7 +126,9 @@
 		}
 		for(var i = 0; i < items.length; i++) {
 			var item = items[i];
-			if(item["latlng"]=="") continue;
+			if(item["latlng"]==",") {
+				continue;
+			}
 			if(yearMonthMap[item["year"]+"-"+item["month"]]==undefined) {
 				yearMonthMap[item["year"]+"-"+item["month"]] = 1;
 			} else {
