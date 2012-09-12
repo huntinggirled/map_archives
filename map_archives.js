@@ -1,3 +1,7 @@
+/**
+ *
+ */
+
 'use strict';
 
 (function(jQuery) {
@@ -93,7 +97,7 @@
 			query = query.substring(1, query.length);
 			var querys = new Array();
 			querys = query.split("&");
-			for(i=0; i<querys.length; i++){
+			for(var i=0; i<querys.length; i++){
 				var pram = new Array();
 				pram = querys[i].split("=");
 				var name = pram[0];
@@ -161,7 +165,7 @@
 		}
 		map.panTo(centerLatlng);
 		if(selectForm==undefined) {
-			var selectFormBuf;
+			var selectFormBuf = '';
 			var allCnt = 0;
 			for (var k in yearMonthMap) {
 				selectFormBuf += "<option value=\""+k+"\">"+k.split("-")[0]+"îN"+k.split("-")[1]+"åéÅi"+yearMonthMap[k]+"Åj</option>";
@@ -179,7 +183,7 @@
 		if(directQueryValueLatLng!=undefined) {
 			jQuery.directMarker(directQueryValueLatLng);
 		}
-	}
+	};
 
 	jQuery.createMarker = function(latlng, title, content, zIn) {
 		var marker = new google.maps.Marker({
@@ -214,7 +218,7 @@
 		if(jQuery('#polyline').is(':checked')==true) polyPath.getPath().insertAt(pathCnt++, latlng);
 		markerList.push(marker);
 		infowindowList.push(infowindow);
-	}
+	};
 
 	jQuery.fn.sortToggle = function() {
 		if(jQuery('#sort1').is(':checked')==true) {
@@ -223,7 +227,7 @@
 			jQuery('#sort1').prop('checked', true);
 		}
 		jQuery(this).markerToggle(undefined);
-	}
+	};
 
 	jQuery.fn.markerToggle = function(term) {
 		if(term!=undefined) selectTerm = term;
@@ -232,7 +236,7 @@
 		var path = polyPath.getPath();
 		while(path.getLength()>0) path.pop();
 		if(selectTerm!="2-2") jQuery(this).loadMarker();
-	}
+	};
 
 	jQuery.fn.polylineToggle = function() {
 		if(jQuery('#polyline').is(':checked')==true) {
@@ -247,7 +251,7 @@
 			var path = polyPath.getPath();
 			while(path.getLength()>0) path.pop();
 		}
-	}
+	};
 
 	jQuery.fn.screenToggle = function() {
 		if(jQuery('#screen').is(':checked')==true) {
@@ -269,7 +273,7 @@
 			google.maps.event.trigger(map, 'resize');
 			map.panTo(latlng);
 		}
-	}
+	};
 
 	jQuery.fn.slideMarker = function(zIn) {
 		var minZIn = markerList.getAt(0).getZIndex();
@@ -288,7 +292,7 @@
 				break;
 			}
 		}
-	}
+	};
 
 	jQuery.directMarker = function(latlng) {
 		for(var i=0; i<markerList.length; i++) {
@@ -304,5 +308,5 @@
 				break;
 			}
 		}
-	}
+	};
 })(jQuery);
