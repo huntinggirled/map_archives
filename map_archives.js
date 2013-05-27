@@ -17,7 +17,8 @@
 		'<div id="screennavi">'
 		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;">◇ 閉じる</a></div>'
 		+'<div id="marker"><img src="indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
-		+'<div><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
+		+'<div><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
+		+'<div><input id="search_button" type="button" value="周辺を再検索" onclick="jQuery(\'#map_archives\').markerToggle(undefined);return false;" disabled></div>'
 		+'<div><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked==true)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
 		+'<div><input id="screen" type="checkbox" onchange="jQuery(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked==true)?false:true;jQuery(\'#map_archives\').screenToggle();return false;">全画面表示</a></div>'
 		+'</div>'
@@ -220,8 +221,11 @@
 	jQuery.fn.sortToggle = function() {
 		if(jQuery('#sort1').is(':checked')==true) {
 			jQuery('#sort2').prop('checked', true);
+			jQuery('#search_button').attr('disabled', false);
+			jQuery('#search_button').removeAttr('disabled');
 		} else {
 			jQuery('#sort1').prop('checked', true);
+			jQuery('#search_button').attr('disabled', true);
 		}
 		jQuery(this).markerToggle(undefined);
 	};
