@@ -14,20 +14,18 @@
 	;
 
 	jQuery('body').append(
-		'<div id="sidenavi">'
-		+'<div>ソート <input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離</a></div>'
-		+'<div id="marker"><img src="indi.gif" alt="読み込み中..." width="10px" height="10px" /> 読み込み中...</div>'
+		'<div id="screennavi">'
+		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;">◇ 閉じる</a></div>'
+		+'<div id="marker"><img src="indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
+		+'<div><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
 		+'<div><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked==true)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
-		+'</div>'
-		+'<div id="screennavi">'
 		+'<div><input id="screen" type="checkbox" onchange="jQuery(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked==true)?false:true;jQuery(\'#map_archives\').screenToggle();return false;">全画面表示</a></div>'
 		+'</div>'
 	);
 	jQuery('#sidenavi')
 	.css('position', 'fixed')
 	.css('background', '#cccccc')
-	.css('line-height', '25px')
-	.css('padding', '10px')
+	.css('padding', '5px')
 	.css('top', '50%')
 	.css('right', '0px')
 	.css('z-index', '2000')
@@ -37,8 +35,7 @@
 	jQuery('#screennavi')
 	.css('position', 'fixed')
 	.css('background', '#cccccc')
-	.css('line-height', '25px')
-	.css('padding', '10px')
+	.css('padding', '5px')
 	.css('bottom', '0px')
 	.css('right', '0px')
 	.css('z-index', '2000')
@@ -138,9 +135,9 @@
 			} else {
 				yearMonthMap[item["year"]+"-"+item["month"]]++;
 			}
-			var itemContent = "<div style=\"height:80px; width:240px; overflow:auto;\">";
-			itemContent += "<div><a onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←前</a> / <a onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">次→</a></div>";
-			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"widget-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
+			var itemContent = "<div style=\"height:80px; width:200px; overflow:auto;\">";
+			itemContent += "<div>[<a onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a>] [<a onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a>]</div>";
+			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"asset-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
 			itemContent += item["date"]+"<br />";
 			itemContent += item["body"]+"...";
@@ -153,7 +150,7 @@
 						jQuery.createMarker(itemLatlng, item["title"], itemContent, i);
 						if(selectForm==undefined) {
 							jQuery('title').append(": "+item["title"]);
-							jQuery('#page-title').append(": "+item["title"]);
+							jQuery('.archive-header').append(": "+item["title"]);
 						}
 					}
 				} else
@@ -177,7 +174,7 @@
 			selectForm += "<option value=\"0-0\">直近10件</option>";
 			selectForm += "<option value=\"4-4\">直近100件</option>";
 			selectForm += selectFormBuf;
-			selectForm += "<option value=\"1-1\">全マーカー（"+allCnt+"）</option><option value=\"2-2\">全て削除</option></select>";
+			selectForm += "<option value=\"1-1\">全マーク（"+allCnt+"）</option><option value=\"2-2\">全て削除</option></select>";
 			jQuery('#marker').empty().append(selectForm);
 		}
 		if(directQueryValueLatLng!=undefined) {
@@ -272,6 +269,16 @@
 			//thisElem.css('z-index', orgSize['zindex']);
 			google.maps.event.trigger(map, 'resize');
 			map.panTo(latlng);
+		}
+	};
+
+	jQuery.fn.tabToggle = function() {
+		if(jQuery('#screennavi').css('right')=='0px') {
+				jQuery('#screennavi').animate({right: '-'+(jQuery('#screennavi').width()-50)+'px', bottom: '-'+(jQuery('#screennavi').height()-17)+'px'}, 200);
+				jQuery('#navitab a').text('◆ 開く');
+		} else {
+				jQuery('#screennavi').animate({right: '0px', bottom: '0px'}, 200);
+				jQuery('#navitab a').text('◇ 閉じる');
 		}
 	};
 
