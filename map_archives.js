@@ -158,16 +158,16 @@
 							jQuery('.archive-header').append(": "+item["title"]);
 						}
 					}
-					jQuery('#sort_div').slideUp();
-					jQuery('#search_div').slideUp();
-					jQuery('#polyline_div').slideUp();
+					jQuery('#sort_div').hide();
+					jQuery('#search_div').hide();
+					jQuery('#polyline_div').hide();
 				} else {
 					if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
 						jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
 					}
-					jQuery('#sort_div').slideDown();
-					jQuery('#search_div').slideDown();
-					jQuery('#polyline_div').slideDown();
+					jQuery('#sort_div').show();
+					jQuery('#search_div').show();
+					jQuery('#polyline_div').show();
 				}
 			}
 			seq++;
