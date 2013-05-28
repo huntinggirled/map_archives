@@ -17,12 +17,16 @@
 		'<div id="screennavi">'
 		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;">◇ 閉じる</a></div>'
 		+'<div id="marker"><img src="indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
-		+'<div><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
-		+'<div><input id="search_button" type="button" value="周辺を再検索" onclick="jQuery(\'#map_archives\').markerToggle(undefined);return false;" disabled></div>'
-		+'<div><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked==true)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
+		+'<div id="sort_div"><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
+		+'<div id="search_div"><input id="search_button" type="button" value="周辺を再検索" onclick="jQuery(\'#map_archives\').markerToggle(undefined);return false;" disabled="disabled" /></div>'
+		+'<div id="polyline_div"><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked==true)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
+		+'<div id="current_div"><input id="current_button" type="button" value="現在地に移動" onclick="jQuery(\'#map_archives\').getCurrentPosition();return false;"></div>'
 		+'<div><input id="screen" type="checkbox" onchange="jQuery(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked==true)?false:true;jQuery(\'#map_archives\').screenToggle();return false;">全画面表示</a></div>'
 		+'</div>'
 	);
+	jQuery('#sort_div').hide();
+	jQuery('#search_div').hide();
+	jQuery('#polyline_div').hide();
 	jQuery('#sidenavi')
 	.css('position', 'fixed')
 	.css('background', '#cccccc')
@@ -154,9 +158,16 @@
 							jQuery('.archive-header').append(": "+item["title"]);
 						}
 					}
-				} else
-				if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
-					jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
+					jQuery('#sort_div').slideUp();
+					jQuery('#search_div').slideUp();
+					jQuery('#polyline_div').slideUp();
+				} else {
+					if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
+						jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
+					}
+					jQuery('#sort_div').slideDown();
+					jQuery('#search_div').slideDown();
+					jQuery('#polyline_div').slideDown();
 				}
 			}
 			seq++;
@@ -318,6 +329,34 @@
 				preMarker = marker;
 				break;
 			}
+		}
+	};
+
+	jQuery.fn.getCurrentPosition = function() {
+		jQuery('#current_button').attr('disabled', true);
+		jQuery('#current_div').append(' <img src="indi.gif" alt="読み込み中..." width="10" height="10" />');
+		if(navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			//	var infowindow = new google.maps.InfoWindow({
+			//		map: map,
+			//		position: pos,
+			//		content: '現在地',
+			//	});
+				map.panTo(pos);
+				jQuery('#current_button').attr('disabled', false);
+				jQuery('#current_button').removeAttr('disabled');
+				jQuery('#current_div > img').remove();
+			},
+			function() {
+				jQuery('#current_button').attr('disabled', false);
+				jQuery('#current_button').removeAttr('disabled');
+				jQuery('#current_div > img').remove();
+			});
+		} else {
+			jQuery('#current_button').attr('disabled', false);
+			jQuery('#current_button').removeAttr('disabled');
+			jQuery('#current_div > img').remove();
 		}
 	};
 })(jQuery);
