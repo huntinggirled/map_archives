@@ -15,13 +15,13 @@
 
 	jQuery('body').append(
 		'<div id="screennavi">'
-		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;"> •Â‚¶‚é</a></div>'
-		+'<div id="marker"><img src="indi.gif" alt="“Ç‚İ‚İ’†..." width="10" height="10" /> “Ç‚İ‚İ’†...</div>'
-		+'<div id="sort_div"><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">ŠÔ‡</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">‹——£‡</a></div>'
-		+'<div id="search_div"><input id="search_button" type="button" value="ü•Ó‚ğÄŒŸõ" onclick="jQuery(\'#map_archives\').markerToggle(undefined);return false;" disabled="disabled" /></div>'
-		+'<div id="polyline_div"><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked==true)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ƒ|ƒŠƒ‰ƒCƒ“•\¦</a></div>'
-		+'<div id="current_div"><input id="current_button" type="button" value="Œ»İ’n‚ÉˆÚ“®" onclick="jQuery(\'#map_archives\').getCurrentPosition();return false;"></div>'
-		+'<div><input id="screen" type="checkbox" onchange="jQuery(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked==true)?false:true;jQuery(\'#map_archives\').screenToggle();return false;">‘S‰æ–Ê•\¦</a></div>'
+		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;">â—‡ é–‰ã˜ã‚‹</a></div>'
+		+'<div id="marker"><img src="indi.gif" alt="èª­ã¿è¾¼ã¿ä¸­..." width="10" height="10" /> èª­ã¿è¾¼ã¿ä¸­...</div>'
+		+'<div id="sort_div"><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">æ™‚é–“é †</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle(undefined);return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">è·é›¢é †</a></div>'
+		+'<div id="search_div"><input id="search_button" type="button" value="å‘¨è¾ºã‚’å†æ¤œç´¢" onclick="jQuery(\'#map_archives\').markerToggle(undefined);return false;" disabled="disabled" /></div>'
+		+'<div id="polyline_div"><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked==true)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ãƒãƒªãƒ©ã‚¤ãƒ³è¡¨ç¤º</a></div>'
+		+'<div id="current_div"><input id="current_button" type="button" value="ç¾åœ¨åœ°ã«ç§»å‹•" onclick="jQuery(\'#map_archives\').getCurrentPosition();return false;"></div>'
+		+'<div><input id="screen" type="checkbox" onchange="jQuery(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked==true)?false:true;jQuery(\'#map_archives\').screenToggle();return false;">å…¨ç”»é¢è¡¨ç¤º</a></div>'
 		+'</div>'
 	);
 	jQuery('#sort_div').hide();
@@ -140,7 +140,7 @@
 				yearMonthMap[item["year"]+"-"+item["month"]]++;
 			}
 			var itemContent = "<div style=\"height:80px; width:200px; overflow:auto;\">";
-			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">©</a> ] [ <a href="" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">¨</a> ]</div>";
+			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">â†</a> ] [ <a href="" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">â†’</a> ]</div>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"asset-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
 			itemContent += item["date"]+"<br />";
@@ -169,16 +169,16 @@
 			var selectFormBuf = '';
 			var allCnt = 0;
 			for (var k in yearMonthMap) {
-				selectFormBuf += "<option value=\""+k+"\">"+k.split("-")[0]+"”N"+k.split("-")[1]+"Œi"+yearMonthMap[k]+"j</option>";
+				selectFormBuf += "<option value=\""+k+"\">"+k.split("-")[0]+"å¹´"+k.split("-")[1]+"æœˆï¼ˆ"+yearMonthMap[k]+"ï¼‰</option>";
 				allCnt += yearMonthMap[k];
 			}
 			selectForm = "";
 			selectForm += "<select onchange=\"jQuery(this).markerToggle(this[this.selectedIndex].value);return false;\">";
-			if(directQueryValueLatLng!=undefined) selectForm += "<option value=\"3-3\">ƒŠƒ“ƒN’n“_</option>";
-			selectForm += "<option value=\"0-0\">’¼‹ß10Œ</option>";
-			selectForm += "<option value=\"4-4\">’¼‹ß100Œ</option>";
+			if(directQueryValueLatLng!=undefined) selectForm += "<option value=\"3-3\">ãƒªãƒ³ã‚¯åœ°ç‚¹</option>";
+			selectForm += "<option value=\"0-0\">ç›´è¿‘10ä»¶</option>";
+			selectForm += "<option value=\"4-4\">ç›´è¿‘100ä»¶</option>";
 			selectForm += selectFormBuf;
-			selectForm += "<option value=\"1-1\">‘Sƒ}[ƒNi"+allCnt+"j</option><option value=\"2-2\">‘S‚Äíœ</option></select>";
+			selectForm += "<option value=\"1-1\">å…¨ãƒãƒ¼ã‚¯ï¼ˆ"+allCnt+"ï¼‰</option><option value=\"2-2\">å…¨ã¦å‰Šé™¤</option></select>";
 			jQuery('#marker').empty().append(selectForm);
 		}
 		if(selectTerm!=undefined && selectTerm=="3-3") {
@@ -291,10 +291,10 @@
 	jQuery.fn.tabToggle = function() {
 		if(jQuery('#screennavi').css('right')=='0px') {
 				jQuery('#screennavi').animate({right: '-'+(jQuery('#screennavi').width()-50)+'px', bottom: '-'+(jQuery('#screennavi').height()-17)+'px'}, 200);
-				jQuery('#navitab a').text('Ÿ ŠJ‚­');
+				jQuery('#navitab a').text('â—† é–‹ã');
 		} else {
 				jQuery('#screennavi').animate({right: '0px', bottom: '0px'}, 200);
-				jQuery('#navitab a').text(' •Â‚¶‚é');
+				jQuery('#navitab a').text('â—‡ é–‰ã˜ã‚‹');
 		}
 	};
 
@@ -335,14 +335,14 @@
 
 	jQuery.fn.getCurrentPosition = function() {
 		jQuery('#current_button').attr('disabled', true);
-		jQuery('#current_div').append(' <img src="indi.gif" alt="“Ç‚İ‚İ’†..." width="10" height="10" />');
+		jQuery('#current_div').append(' <img src="indi.gif" alt="èª­ã¿è¾¼ã¿ä¸­..." width="10" height="10" />');
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			//	var infowindow = new google.maps.InfoWindow({
 			//		map: map,
 			//		position: pos,
-			//		content: 'Œ»İ’n',
+			//		content: 'ç¾åœ¨åœ°',
 			//	});
 				map.panTo(pos);
 				jQuery('#current_button').attr('disabled', false);
