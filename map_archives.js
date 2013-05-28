@@ -111,8 +111,6 @@
 				}
 			}
 		}
-		var seq = 0;
-
 		if(jQuery('#sort1').is(':checked')==true) {
 			items.sort(function(a, b) {
 			//	return (a["date"] < b["date"])?1:-1;
@@ -130,6 +128,7 @@
 				return aCheckDistance-bCheckDistance;
 			});
 		}
+		var seq = 0;
 		for(var i = 0; i < items.length; i++) {
 			var item = items[i];
 			if(item["latlng"]==",") {
@@ -141,7 +140,7 @@
 				yearMonthMap[item["year"]+"-"+item["month"]]++;
 			}
 			var itemContent = "<div style=\"height:80px; width:200px; overflow:auto;\">";
-			itemContent += "<div>[<a onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a>] [<a onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a>]</div>";
+			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a> ] [ <a href="" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a> ]</div>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"asset-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
 			itemContent += item["date"]+"<br />";
@@ -152,22 +151,15 @@
 				if(centerLatlng==undefined) centerLatlng = itemLatlng;
 				if(selectTerm=="3-3") {
 					if(directQueryValueLatLng!=undefined && directQueryValueLatLng.lat()==itemLatlng.lat() && directQueryValueLatLng.lng()==itemLatlng.lng()) {
-						jQuery.createMarker(itemLatlng, item["title"], itemContent, i);
+						alert(i+" "+seq);
+						jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
 						if(selectForm==undefined) {
 							jQuery('title').append(": "+item["title"]);
 							jQuery('.archive-header').append(": "+item["title"]);
 						}
 					}
-					jQuery('#sort_div').hide();
-					jQuery('#search_div').hide();
-					jQuery('#polyline_div').hide();
-				} else {
-					if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
-						jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
-					}
-					jQuery('#sort_div').show();
-					jQuery('#search_div').show();
-					jQuery('#polyline_div').show();
+				} else if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
+					jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
 				}
 			}
 			seq++;
@@ -189,8 +181,17 @@
 			selectForm += "<option value=\"1-1\">全マーク（"+allCnt+"）</option><option value=\"2-2\">全て削除</option></select>";
 			jQuery('#marker').empty().append(selectForm);
 		}
-		if(directQueryValueLatLng!=undefined) {
-			jQuery.directMarker(directQueryValueLatLng);
+		if(selectTerm!=undefined && selectTerm=="3-3") {
+			if(directQueryValueLatLng!=undefined) {
+				jQuery.directMarker(directQueryValueLatLng);
+			}
+			jQuery('#sort_div').hide('fast');
+			jQuery('#search_div').hide('fast');
+			jQuery('#polyline_div').hide('fast');
+		} else {
+			jQuery('#sort_div').show('fast');
+			jQuery('#search_div').show('fast');
+			jQuery('#polyline_div').show('fast');
 		}
 	};
 
