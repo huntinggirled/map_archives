@@ -140,8 +140,8 @@
 				yearMonthMap[item["year"]+"-"+item["month"]]++;
 			}
 			var itemContent = "<div style=\"height:80px; width:200px; overflow:auto;\">";
-			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a> ] [ <a href="" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a> ]</div>";
-			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"asset-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
+			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a> ] [ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a> ]</div>";
+			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"widget-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
 			itemContent += item["date"]+"<br />";
 			itemContent += item["body"]+"...";
@@ -151,7 +151,6 @@
 				if(centerLatlng==undefined) centerLatlng = itemLatlng;
 				if(selectTerm=="3-3") {
 					if(directQueryValueLatLng!=undefined && directQueryValueLatLng.lat()==itemLatlng.lat() && directQueryValueLatLng.lng()==itemLatlng.lng()) {
-						alert(i+" "+seq);
 						jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
 						if(selectForm==undefined) {
 							jQuery('title').append(": "+item["title"]);
