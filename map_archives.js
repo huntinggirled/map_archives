@@ -50,12 +50,21 @@
 
 	var thisElem = jQuery('#map_archives');
 	var myLatlng = new google.maps.LatLng(35.681597,139.766092);
+	var myZoom = 13;
+	var preZoom = myZoom;
 	var myOptions = {
-		zoom: 13,
+		zoom: myZoom,
 		center: myLatlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 	};
 	var map = new google.maps.Map(document.getElementById('map_archives'), myOptions);
+	google.maps.event.addListener(map, 'zoom_changed', function() {
+		var zoom = map.getZoom();
+		if(zoom==10) {
+			jQuery(this).markerToggle(map.getCenter(), preZoom-zoom);
+		}
+		preZoom = zoom;
+	});
 	var polyPath = new google.maps.Polyline({
 		path: [],
 		strokeColor: "#FF0000",
@@ -81,7 +90,7 @@
 		url: '<$mt:BlogURL$>archives_jsonp.php',
 		dataType: 'jsonp',
 		callback: 'callback',
-                timeout: 5000,
+		timeout: 5000,
 		success: function(data, status){
 			itemData = data;
 			thisElem.loadMarker();
@@ -89,10 +98,10 @@
 		error: function(xhr, status, errorThrown) {jQuery('#marker').empty();}
 	});
 
-	jQuery.fn.loadMarker = function() {
+	jQuery.fn.loadMarker = function(latlng, zoomInOut) {
 		var items = itemData["items"];
 		var yearMonthMap = new Array();
-		var centerLatlng = void(0);
+		var centerLatlng = latlng || void(0);
 		var directQueryValueLatLng = void(0);
 		if(location.search){
 			var query = location.search;
@@ -118,12 +127,12 @@
 			});
 		} else {
 			items.sort(function(a, b) {
-				var centerLatlng = map.getCenter();
-				var aCheckLat = centerLatlng.lat()-a["latlng"].split(",")[0];
-				var aCheckLng = centerLatlng.lng()-a["latlng"].split(",")[1];
+				var sortCenterLatlng = map.getCenter();
+				var aCheckLat = sortCenterLatlng.lat()-a["latlng"].split(",")[0];
+				var aCheckLng = sortCenterLatlng.lng()-a["latlng"].split(",")[1];
 				var aCheckDistance = Math.sqrt(Math.pow(aCheckLat, 2)+Math.pow(aCheckLng, 2));
-				var bCheckLat = centerLatlng.lat()-b["latlng"].split(",")[0];
-				var bCheckLng = centerLatlng.lng()-b["latlng"].split(",")[1];
+				var bCheckLat = sortCenterLatlng.lat()-b["latlng"].split(",")[0];
+				var bCheckLng = sortCenterLatlng.lng()-b["latlng"].split(",")[1];
 				var bCheckDistance = Math.sqrt(Math.pow(bCheckLat, 2)+Math.pow(bCheckLng, 2));
 				return aCheckDistance-bCheckDistance;
 			});
@@ -144,7 +153,13 @@
 			itemContent += item["body"]+"...";
 			itemContent += "</div>";
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==item["year"]+"-"+item["month"] || selectTerm=="3-3")) {
-				var itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
+				var itemLatlng;
+				if(latlng && zoomInOut && zoomInOut>0) {
+					itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
+				} else {
+					itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
+				}
+				//var itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
 				if(!centerLatlng) centerLatlng = itemLatlng;
 				if(selectTerm=="3-3") {
 					if(directQueryValueLatLng && directQueryValueLatLng.lat()==itemLatlng.lat() && directQueryValueLatLng.lng()==itemLatlng.lng()) {
@@ -236,6 +251,14 @@
 			jQuery('#search_button').attr('disabled', true);
 		}
 		jQuery(this).markerToggle();
+	};
+
+	jQuery.fn.zoomToggle = function(latlng, zoomInOut) {
+		while(markerList.getLength()>0) markerList.pop().setVisible(false);
+		while(infowindowList.getLength()>0) infowindowList.pop().close();
+		var path = polyPath.getPath();
+		while(path.getLength()>0) path.pop();
+		jQuery(this).loadMarker(latlng, zoomInOut);
 	};
 
 	jQuery.fn.markerToggle = function(term) {
