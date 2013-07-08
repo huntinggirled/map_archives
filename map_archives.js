@@ -58,13 +58,6 @@
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 	};
 	var map = new google.maps.Map(document.getElementById('map_archives'), myOptions);
-	google.maps.event.addListener(map, 'zoom_changed', function() {
-		var zoom = map.getZoom();
-		if(zoom==10) {
-			jQuery(this).markerToggle(map.getCenter(), preZoom-zoom);
-		}
-		preZoom = zoom;
-	});
 	var polyPath = new google.maps.Polyline({
 		path: [],
 		strokeColor: "#FF0000",
@@ -98,10 +91,10 @@
 		error: function(xhr, status, errorThrown) {jQuery('#marker').empty();}
 	});
 
-	jQuery.fn.loadMarker = function(latlng, zoomInOut) {
+	jQuery.fn.loadMarker = function() {
 		var items = itemData["items"];
 		var yearMonthMap = new Array();
-		var centerLatlng = latlng || void(0);
+		var centerLatlng = void(0);
 		var directQueryValueLatLng = void(0);
 		if(location.search){
 			var query = location.search;
@@ -153,27 +146,24 @@
 			itemContent += item["body"]+"...";
 			itemContent += "</div>";
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==item["year"]+"-"+item["month"] || selectTerm=="3-3")) {
-				var itemLatlng;
-				if(latlng && zoomInOut && zoomInOut>0) {
-					itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
-				} else {
-					itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
-				}
-				//var itemLatlng = new google.maps.LatLng(item["latlng"].split(",")[0], item["latlng"].split(",")[1]);
-				if(!centerLatlng) centerLatlng = itemLatlng;
+				var itemLat = +item["latlng"].split(",")[0];
+				var itemLng = +item["latlng"].split(",")[1];
+				var directLat = (directQueryValueLatLng)?+directQueryValueLatLng.lat():void(0);
+				var directLng = (directQueryValueLatLng)?+directQueryValueLatLng.lng():void(0);
+				var latlng = new google.maps.LatLng(itemLat, itemLng);
+				if(!centerLatlng) centerLatlng = latlng;
 				if(selectTerm=="3-3") {
-					if(directQueryValueLatLng && directQueryValueLatLng.lat()==itemLatlng.lat() && directQueryValueLatLng.lng()==itemLatlng.lng()) {
-						jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
+					if(directLat==itemLat && directLng==itemLng) {
+						jQuery.createMarker(latlng, item["title"], itemContent, seq++);
 						if(!selectForm) {
 							jQuery('title').append(": "+item["title"]);
 							jQuery('.archive-header').append(": "+item["title"]);
 						}
 					}
 				} else if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
-					jQuery.createMarker(itemLatlng, item["title"], itemContent, seq);
+					jQuery.createMarker(latlng, item["title"], itemContent, seq++);
 				}
 			}
-			seq++;
 		}
 		map.panTo(centerLatlng);
 		if(!selectForm) {
@@ -193,9 +183,7 @@
 			jQuery('#marker').empty().append(selectForm);
 		}
 		if(selectTerm && selectTerm=="3-3") {
-			if(directQueryValueLatLng) {
-				jQuery.directMarker(directQueryValueLatLng);
-			}
+			if(directQueryValueLatLng) jQuery.directMarker(new google.maps.LatLng(directLat, directLng));
 			jQuery('#sort_div').hide('fast');
 			jQuery('#search_div').hide('fast');
 			jQuery('#polyline_div').hide('fast');
@@ -251,14 +239,6 @@
 			jQuery('#search_button').attr('disabled', true);
 		}
 		jQuery(this).markerToggle();
-	};
-
-	jQuery.fn.zoomToggle = function(latlng, zoomInOut) {
-		while(markerList.getLength()>0) markerList.pop().setVisible(false);
-		while(infowindowList.getLength()>0) infowindowList.pop().close();
-		var path = polyPath.getPath();
-		while(path.getLength()>0) path.pop();
-		jQuery(this).loadMarker(latlng, zoomInOut);
 	};
 
 	jQuery.fn.markerToggle = function(term) {
