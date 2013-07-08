@@ -55,6 +55,7 @@
 	var myOptions = {
 		zoom: myZoom,
 		center: myLatlng,
+		disableDefaultUI: true,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 	};
 	var map = new google.maps.Map(document.getElementById('map_archives'), myOptions);
