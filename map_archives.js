@@ -134,7 +134,7 @@
 		var seq = 0;
 		for(var i = 0; i < items.length; i++) {
 			var item = items[i];
-			if(item["lat"] || item["lng"]) {
+			if(item["lat"]=="" || item["lng"]=="") {
 				continue;
 			}
 			yearMonthMap[item["year"]+"-"+item["month"]] = +(yearMonthMap[item["year"]+"-"+item["month"]]) || 0;
