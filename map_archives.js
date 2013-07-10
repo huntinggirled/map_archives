@@ -134,7 +134,7 @@
 		var seq = 0;
 		for(var i = 0; i < items.length; i++) {
 			var item = items[i];
-			if(item["latlng"]==",") {
+			if(item["lat"] || item["lng"]) {
 				continue;
 			}
 			yearMonthMap[item["year"]+"-"+item["month"]] = +(yearMonthMap[item["year"]+"-"+item["month"]]) || 0;
@@ -147,14 +147,10 @@
 			itemContent += item["body"]+"...";
 			itemContent += "</div>";
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==item["year"]+"-"+item["month"] || selectTerm=="3-3")) {
-				var itemLat = +item["latlng"].split(",")[0];
-				var itemLng = +item["latlng"].split(",")[1];
-				var directLat = (directQueryValueLatLng)?+directQueryValueLatLng.lat():void(0);
-				var directLng = (directQueryValueLatLng)?+directQueryValueLatLng.lng():void(0);
-				var latlng = new google.maps.LatLng(itemLat, itemLng);
+				var latlng = new google.maps.LatLng(item["lat"], item["lng"]);
 				if(!centerLatlng) centerLatlng = latlng;
 				if(selectTerm=="3-3") {
-					if(directLat==itemLat && directLng==itemLng) {
+					if(directQueryValueLatLng.lat()==latlng.lat() && directQueryValueLatLng.lng()==latlng.lng()) {
 						jQuery.createMarker(latlng, item["title"], itemContent, seq++);
 						if(!selectForm) {
 							jQuery('title').append(": "+item["title"]);
@@ -184,7 +180,7 @@
 			jQuery('#marker').empty().append(selectForm);
 		}
 		if(selectTerm && selectTerm=="3-3") {
-			if(directQueryValueLatLng) jQuery.directMarker(new google.maps.LatLng(directLat, directLng));
+			if(directQueryValueLatLng) jQuery.directMarker(directQueryValueLatLng);
 			jQuery('#sort_div').hide('fast');
 			jQuery('#search_div').hide('fast');
 			jQuery('#polyline_div').hide('fast');
