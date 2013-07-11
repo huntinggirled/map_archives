@@ -123,8 +123,7 @@
 		}
 		if(jQuery('#sort1').is(':checked')) {
 			items.sort(function(a, b) {
-			//	return (a["date"] < b["date"])?1:-1;
-				return (a["year"]+a["month"]+a["date"] < b["year"]+b["month"]+b["date"])?1:-1;
+				return (a["datetime"] < b["datetime"])?1:-1;
 			});
 		} else {
 			items.sort(function(a, b) {
@@ -146,16 +145,17 @@
 			if(item["lat"]=="" || item["lng"]=="") {
 				continue;
 			}
-			yearMonthMap[item["year"]+"-"+item["month"]] = +(yearMonthMap[item["year"]+"-"+item["month"]]) || 0;
-			yearMonthMap[item["year"]+"-"+item["month"]]++;
+			var ymKey = item['datetime'].split('-')[0]+'-'+item['datetime'].split('-')[1];
+			yearMonthMap[ymKey] = +(yearMonthMap[ymKey]) || 0;
+			yearMonthMap[ymKey]++;
 			var itemContent = "<div id=\"seq_marker\" seq=\""+seq+"\" style=\"height:80px; width:200px; overflow:auto;\">";
 			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a> ] [ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a> ]</div>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"widget-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
-			itemContent += item["date"]+"<br />";
-			itemContent += item["body"]+"...";
+			// itemContent += item["datetime"].split(' ')[0]+"<br />";
+			// itemContent += item["body"]+"...";
 			itemContent += "</div>";
-			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==item["year"]+"-"+item["month"] || selectTerm=="3-3")) {
+			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==ymKey || selectTerm=="3-3")) {
 				var latlng = new google.maps.LatLng(item["lat"], item["lng"]);
 				if(!centerLatlng) centerLatlng = latlng;
 				if(selectTerm=="3-3") {
@@ -181,7 +181,7 @@
 			var selectFormBuf = '';
 			var allCnt = 0;
 			for (var k in yearMonthMap) {
-				selectFormBuf += "<option value=\""+k+"\">"+k.split("-")[0]+"年"+k.split("-")[1]+"月（"+yearMonthMap[k]+"）</option>";
+				selectFormBuf += "<option value=\""+k+"\">"+k.split("-")[0]+"年"+k.split("-")[1].replace('0', '')+"月（"+yearMonthMap[k]+"）</option>";
 				allCnt += yearMonthMap[k];
 			}
 			selectForm = "";
