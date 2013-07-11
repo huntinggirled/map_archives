@@ -179,7 +179,8 @@
 			var selectFormBuf = '';
 			var allCnt = 0;
 			for (var k in yearMonthMap) {
-				selectFormBuf += "<option value=\""+k+"\">"+k.split("-")[0]+"年"+k.split("-")[1].replace('0', '')+"月（"+yearMonthMap[k]+"）</option>";
+				var k_trim = k.replace('-0', '-');
+				selectFormBuf += "<option value=\""+k+"\">"+k_trim.split("-")[0]+"年"+k_trim.split("-")[1]+"月（"+yearMonthMap[k]+"）</option>";
 				allCnt += yearMonthMap[k];
 			}
 			selectForm = "";
