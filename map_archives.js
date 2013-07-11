@@ -16,7 +16,7 @@
 	jQuery('body').append(
 		'<div id="screennavi">'
 		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;">◇ 閉じる</a></div>'
-		+'<div id="marker"><img src="indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
+		+'<div id="marker_div"><img src="indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
 		+'<div id="sort_div"><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
 		+'<div id="search_div"><input id="search_button" type="button" value="周辺を再検索" onclick="jQuery(\'#map_archives\').markerToggle();return false;" disabled="disabled" /></div>'
 		+'<div id="polyline_div"><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
@@ -96,7 +96,7 @@
 			itemData = data;
 			thisElem.loadMarker();
 		},
-		error: function(xhr, status, errorThrown) {jQuery('#marker').empty();}
+		error: function(xhr, status, errorThrown) {jQuery('#marker_div').empty();}
 	});
 
 	jQuery.fn.loadMarker = function() {
@@ -191,7 +191,7 @@
 			selectForm += "<option value=\"4-4\">直近100件</option>";
 			selectForm += selectFormBuf;
 			selectForm += "<option value=\"1-1\">全マーク（"+allCnt+"）</option><option value=\"2-2\">全て削除</option></select>";
-			jQuery('#marker').empty().append(selectForm);
+			jQuery('#marker_div').empty().append(selectForm);
 		}
 		if(selectTerm && selectTerm=="3-3") {
 			if(directLatlng) jQuery.directMarker(directLatlng);
@@ -236,7 +236,7 @@
 			infowindow.open(map, marker);
 			preInfowindow = infowindow;
 			preMarker = marker;
-			jQuery('select').blur();
+			jQuery('#marker_div select').blur();
 		});
 		if(jQuery('#polyline').is(':checked')) polyPath.getPath().insertAt(pathCnt++, latlng);
 		markerList.push(marker);
