@@ -152,8 +152,6 @@
 			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a> ] [ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a> ]</div>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"widget-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
 			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
-			// itemContent += item["datetime"].split(' ')[0]+"<br />";
-			// itemContent += item["body"]+"...";
 			itemContent += "</div>";
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==ymKey || selectTerm=="3-3")) {
 				var latlng = new google.maps.LatLng(item["lat"], item["lng"]);
