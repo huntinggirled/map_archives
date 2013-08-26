@@ -100,7 +100,7 @@
 	});
 
 	jQuery.fn.loadMarker = function() {
-		var items = itemData["items"];
+		var items = itemData['items'];
 		var yearMonthMap = new Array();
 		var centerLatlng = void(0);
 		var directLatlng = void(0);
@@ -123,18 +123,18 @@
 		}
 		if(jQuery('#sort1').is(':checked')) {
 			items.sort(function(a, b) {
-				return (a["datetime"] < b["datetime"])?1:-1;
+				return (a['datetime'] < b['datetime'])?1:-1;
 			});
 		} else {
 			items.sort(function(a, b) {
 				var sortCenterLatlng = map.getCenter();
 				var sortCenterLat = sortCenterLatlng.lat();
 				var sortCenterLng = sortCenterLatlng.lng();
-				var aCheckLat = sortCenterLat-a["lat"];
-				var aCheckLng = sortCenterLng-a["lng"];
+				var aCheckLat = sortCenterLat-a['lat'];
+				var aCheckLng = sortCenterLng-a['lng'];
 				var aCheckDistance = Math.sqrt(Math.pow(aCheckLat, 2)+Math.pow(aCheckLng, 2));
-				var bCheckLat = sortCenterLat-b["lat"];
-				var bCheckLng = sortCenterLng-b["lng"];
+				var bCheckLat = sortCenterLat-b['lat'];
+				var bCheckLng = sortCenterLng-b['lng'];
 				var bCheckDistance = Math.sqrt(Math.pow(bCheckLat, 2)+Math.pow(bCheckLng, 2));
 				return aCheckDistance-bCheckDistance;
 			});
@@ -142,30 +142,30 @@
 		var seq = 0;
 		for(var i = 0; i < items.length; i++) {
 			var item = items[i];
-			if(item["lat"]=="" || item["lng"]=="") {
+			if(item['lat']=="" || item['lng']=="") {
 				continue;
 			}
 			var ymKey = item['datetime'].split('-')[0]+'-'+item['datetime'].split('-')[1];
 			yearMonthMap[ymKey] = +(yearMonthMap[ymKey]) || 0;
 			yearMonthMap[ymKey]++;
-			var itemContent = "<div id=\"seq_marker\" seq=\""+seq+"\" style=\"height:80px; width:200px; overflow:auto;\">";
-			itemContent += "<div>[ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq+1)+");return false;\">←</a> ] [ <a href=\"\" onclick=\"jQuery(this).slideMarker("+(seq-1)+");return false;\">→</a> ]</div>";
-			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\"><img class=\"widget-img-thumb\" src=\""+item["thumbnail"]+"\" height=\"45\" width=\"45\" alt=\""+item["title"]+"\" title=\""+item["title"]+"\" /></a>";
-			itemContent += "<a href=\""+item["link"]+"\" target=\"_blank\">"+item["title"]+"</a><br />";
-			itemContent += "</div>";
+			var itemContent = '<div id="seq_marker" seq="'+seq+'" style="height:80px; width:200px; overflow:auto;">';
+			itemContent += '<div>[ <a href="" onclick="jQuery(this).slideMarker('+(seq+1)+');return false;">←</a> ] [ <a href="" onclick="jQuery(this).slideMarker('+(seq-1)+');return false;">→</a> ]</div>';
+			itemContent += '<a href="'+item['link']+'" target="_blank"><img class="widget-img-thumb" src="'+item['thumbnail']+'" height="45" width="45" alt="'+item['title']+'" title="'+item['title']+'" /></a>';
+			itemContent += '<a href="'+item['link']+'" target="_blank">'+item['title']+'</a><br />';
+			itemContent += '</div>';
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==ymKey || selectTerm=="3-3")) {
-				var latlng = new google.maps.LatLng(item["lat"], item["lng"]);
+				var latlng = new google.maps.LatLng(item['lat'], item['lng']);
 				if(!centerLatlng) centerLatlng = latlng;
 				if(selectTerm=="3-3") {
 					if(directLatlng.lat()==latlng.lat() && directLatlng.lng()==latlng.lng()) {
-						jQuery.createMarker(latlng, item["title"], itemContent, seq++);
+						jQuery.createMarker(latlng, item['title'], itemContent, seq++);
 						if(seq==1 && !selectForm) {
-						 	jQuery('title').append(": "+item["title"]);
-						 	jQuery('.archive-header').append(": "+item["title"]);
+						 	jQuery('title').append(": "+item['title']);
+						 	jQuery('.archive-header').append(": "+item['title']);
 						}
 					}
 				} else if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
-					jQuery.createMarker(latlng, item["title"], itemContent, seq++);
+					jQuery.createMarker(latlng, item['title'], itemContent, seq++);
 				}
 			}
 		}
