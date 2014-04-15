@@ -1,11 +1,5 @@
-/**
- *
- */
-
-'use strict';
-
 (function(jQuery) {
-
+	'use strict';
 	jQuery('#header')
 	.css('position', 'relative')
 	;
@@ -53,17 +47,17 @@
 	var myZoom = 13;
 	var preZoom = myZoom;
 	var myOptions = {
-		zoom: myZoom,
-		center: myLatlng,
-		disableDefaultUI: true,
-		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		zoom: myZoom
+		,center: myLatlng
+		,disableDefaultUI: true
+		,mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	var map = new google.maps.Map(document.getElementById('map_archives'), myOptions);
 	var polyPath = new google.maps.Polyline({
-		path: new google.maps.MVCArray(),
-		strokeColor: "#FF0000",
-		strokeOpacity: 1.0,
-		strokeWeight: 2,
+		path: new google.maps.MVCArray()
+		,strokeColor: "#FF0000"
+		,strokeOpacity: 1.0
+		,strokeWeight: 2
 	});
 	polyPath.setMap(map);
 	var pathCnt = 0;
@@ -72,9 +66,9 @@
 	var markerList = new google.maps.MVCArray();
 	var infowindowList = new google.maps.MVCArray();
 	var orgSize = {
-		width: thisElem.css('width'),
-		height: thisElem.css('height'),
-		zindex: thisElem.css('z-index'),
+		width: thisElem.css('width')
+		,height: thisElem.css('height')
+		,zindex: thisElem.css('z-index')
 	};
 	var selectTerm = "0-0";
 	var selectForm = void(0);
@@ -88,16 +82,18 @@
 	});
 
 	jQuery.ajax({
-		url: '<$mt:BlogURL$>archives_jsonp.php',
-		dataType: 'jsonp',
-		callback: 'callback',
-		timeout: 5000,
-		success: function(data, status){
-			itemData = data;
-			thisElem.loadMarker();
-		},
-		error: function(xhr, status, errorThrown) {jQuery('#marker_div').empty();}
-	});
+		url: '<$mt:BlogURL$>archives_jsonp.php'
+		,dataType: 'jsonp'
+		,callback: 'callback'
+		,timeout: 5000
+	})
+	.done(function(data, textStatus, jqXHR) {
+		itemData = data;
+		thisElem.loadMarker();
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {jQuery('#marker_div').empty();})
+	.always(function(data, textStatus, jqXHR) {})
+	;
 
 	jQuery.fn.loadMarker = function() {
 		var items = itemData['items'];
@@ -221,8 +217,8 @@
 				zIndex: zIn
 		});
 		var infowindow = new google.maps.InfoWindow({
-			content: contentBuf,
-			zIndex: 10000
+			content: contentBuf
+			,zIndex: 10000
 		});
 		google.maps.event.addListener(marker, 'click', function() {
 			preInfowindow.close();
