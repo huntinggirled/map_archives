@@ -1,27 +1,28 @@
-(function(jQuery) {
+(function($) {
 	'use strict';
-	jQuery('#header')
+
+	$('#header')
 	.css('position', 'relative')
 	;
-	jQuery('#footer')
+	$('#footer')
 	.css('position', 'relative')
 	;
 
-	jQuery('body').append(
+	$('body').append(
 		'<div id="screennavi">'
-		+'<div id="navitab"><a href="" onclick="jQuery(\'#screennavi\').tabToggle();return false;">◇ 閉じる</a></div>'
-		+'<div id="marker_div"><img src="indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
-		+'<div id="sort_div"><input id="sort1" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="jQuery(\'#map_archives\').markerToggle();return false;"><a href="" onclick="jQuery(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
-		+'<div id="search_div"><input id="search_button" type="button" value="周辺を再検索" onclick="jQuery(\'#map_archives\').markerToggle();return false;" disabled="disabled" /></div>'
-		+'<div id="polyline_div"><input id="polyline" type="checkbox" onchange="jQuery(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked)?false:true;jQuery(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
-		+'<div id="current_div"><input id="current_button" type="button" value="現在地に移動" onclick="jQuery(\'#map_archives\').getCurrentPosition();return false;"></div>'
-		+'<div><input id="screen" type="checkbox" onchange="jQuery(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked)?false:true;jQuery(\'#map_archives\').screenToggle();return false;">全画面表示</a></div>'
+		+'<div id="navitab"><a href="" onclick="$(\'#screennavi\').tabToggle();return false;">◇ 閉じる</a></div>'
+		+'<div id="marker_div"><img src="img/indi.gif" alt="読み込み中..." width="10" height="10" /> 読み込み中...</div>'
+		+'<div id="sort_div"><input id="sort1" type="radio" name="sort" onchange="$(\'#map_archives\').markerToggle();return false;" checked><a href="" onclick="$(\'#map_archives\').sortToggle();return false;">時間順</a> <input id="sort2" type="radio" name="sort" onchange="$(\'#map_archives\').markerToggle();return false;"><a href="" onclick="$(\'#map_archives\').sortToggle();return false;">距離順</a></div>'
+		+'<div id="search_div"><input id="search_button" type="button" value="周辺を再検索" onclick="$(\'#map_archives\').markerToggle();return false;" disabled="disabled" /></div>'
+		+'<div id="polyline_div"><input id="polyline" type="checkbox" onchange="$(\'#map_archives\').polylineToggle();return false;"> <a href="" onclick="document.getElementById(\'polyline\').checked=(document.getElementById(\'polyline\').checked)?false:true;$(\'#map_archives\').polylineToggle();return false;">ポリライン表示</a></div>'
+		+'<div id="current_div"><input id="current_button" type="button" value="現在地に移動" onclick="$(\'#map_archives\').getCurrentPosition();return false;"></div>'
+		+'<div><input id="screen" type="checkbox" onchange="$(\'#map_archives\').screenToggle();return false;"> <a href="" onclick="document.getElementById(\'screen\').checked=(document.getElementById(\'screen\').checked)?false:true;$(\'#map_archives\').screenToggle();return false;">全画面表示</a></div>'
 		+'</div>'
 	);
-	jQuery('#sort_div').hide();
-	jQuery('#search_div').hide();
-	jQuery('#polyline_div').hide();
-	jQuery('#sidenavi')
+	$('#sort_div').hide();
+	$('#search_div').hide();
+	$('#polyline_div').hide();
+	$('#sidenavi')
 	.css('position', 'fixed')
 	.css('background', '#cccccc')
 	.css('padding', '5px')
@@ -31,7 +32,7 @@
 	.css('opacity', '0.9')
 	.css('filter', 'alpha(opacity=90)')
 	;
-	jQuery('#screennavi')
+	$('#screennavi')
 	.css('position', 'fixed')
 	.css('background', '#cccccc')
 	.css('padding', '5px')
@@ -42,7 +43,7 @@
 	.css('filter', 'alpha(opacity=90)')
 	;
 
-	var thisElem = jQuery('#map_archives');
+	var thisElem = $('#map_archives');
 	var myLatlng = new google.maps.LatLng(35.681597,139.766092);
 	var myZoom = 13;
 	var preZoom = myZoom;
@@ -74,14 +75,14 @@
 	var selectForm = void(0);
 	var itemData = [];
 
-	jQuery('body').keydown(function(e){
-		var seq = jQuery('#seq_marker').attr('seq') || void(0);
+	$('body').keydown(function(e){
+		var seq = $('#seq_marker').attr('seq') || void(0);
 		if(!seq) return;
 		if(event.which===37) thisElem.slideMarker(++seq);
 		else if(event.which===39) thisElem.slideMarker(--seq);
 	});
 
-	jQuery.ajax({
+	$.ajax({
 		url: '<$mt:BlogURL$>archives_jsonp.php'
 		,dataType: 'jsonp'
 		,callback: 'callback'
@@ -91,11 +92,11 @@
 		itemData = data;
 		thisElem.loadMarker();
 	})
-	.fail(function(jqXHR, textStatus, errorThrown) {jQuery('#marker_div').empty();})
+	.fail(function(jqXHR, textStatus, errorThrown) {$('#marker_div').empty();})
 	.always(function(data, textStatus, jqXHR) {})
 	;
 
-	jQuery.fn.loadMarker = function() {
+	$.fn.loadMarker = function() {
 		var items = itemData['items'];
 		var yearMonthMap = new Array();
 		var centerLatlng = void(0);
@@ -117,7 +118,7 @@
 				}
 			}
 		}
-		if(jQuery('#sort1').is(':checked')) {
+		if($('#sort1').is(':checked')) {
 			items.sort(function(a, b) {
 				return (a['datetime'] < b['datetime'])?1:-1;
 			});
@@ -145,7 +146,7 @@
 			yearMonthMap[ymKey] = +(yearMonthMap[ymKey]) || 0;
 			yearMonthMap[ymKey]++;
 			var itemContent = '<div id="seq_marker" seq="'+seq+'" style="height:80px; width:200px; overflow:auto;">';
-			itemContent += '<div>[ <a href="" onclick="jQuery(this).slideMarker('+(seq+1)+');return false;">←</a> ] [ <a href="" onclick="jQuery(this).slideMarker('+(seq-1)+');return false;">→</a> ]</div>';
+			itemContent += '<div>[ <a href="" onclick="$(this).slideMarker('+(seq+1)+');return false;">←</a> ] [ <a href="" onclick="$(this).slideMarker('+(seq-1)+');return false;">→</a> ]</div>';
 			itemContent += '<a href="'+item['link']+'" target="_blank"><img class="widget-img-thumb" src="'+item['thumbnail']+'" height="45" width="45" alt="'+item['title']+'" title="'+item['title']+'" /></a>';
 			itemContent += '<a href="'+item['link']+'" target="_blank">'+item['title']+'</a><br />';
 			itemContent += '</div>';
@@ -154,23 +155,23 @@
 				if(!centerLatlng) centerLatlng = latlng;
 				if(selectTerm=="3-3") {
 					if(directLatlng.lat()==latlng.lat() && directLatlng.lng()==latlng.lng()) {
-						jQuery.createMarker(latlng, item['title'], itemContent, seq++);
+						$.createMarker(latlng, item['title'], itemContent, seq++);
 						if(seq==1 && !selectForm) {
-						 	jQuery('title').append(": "+item['title']);
-						 	jQuery('.archive-header').append(": "+item['title']);
+						 	$('title').append(": "+item['title']);
+						 	$('.archive-header').append(": "+item['title']);
 						}
 					}
 				} else if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
-					jQuery.createMarker(latlng, item['title'], itemContent, seq++);
+					$.createMarker(latlng, item['title'], itemContent, seq++);
 				}
 			}
 		}
 		map.panTo(centerLatlng);
-		jQuery(this).focus();
+		$(this).focus();
 		if(!selectForm) {
 			if(selectTerm=="3-3" && (seq-1)>0) {
-				jQuery('title').append(" 他"+(seq-1)+"件");
-				jQuery('.archive-header').append(" 他"+(seq-1)+"件");
+				$('title').append(" 他"+(seq-1)+"件");
+				$('.archive-header').append(" 他"+(seq-1)+"件");
 			}
 			var selectFormBuf = '';
 			var allCnt = 0;
@@ -180,27 +181,27 @@
 				allCnt += yearMonthMap[k];
 			}
 			selectForm = "";
-			selectForm += "<select onchange=\"jQuery(this).markerToggle(this[this.selectedIndex].value);return false;\">";
+			selectForm += "<select onchange=\"$(this).markerToggle(this[this.selectedIndex].value);return false;\">";
 			if(directLatlng) selectForm += "<option value=\"3-3\">リンク地点</option>";
 			selectForm += "<option value=\"0-0\">直近10件</option>";
 			selectForm += "<option value=\"4-4\">直近100件</option>";
 			selectForm += selectFormBuf;
 			selectForm += "<option value=\"1-1\">全マーク（"+allCnt+"）</option><option value=\"2-2\">全て削除</option></select>";
-			jQuery('#marker_div').empty().append(selectForm);
+			$('#marker_div').empty().append(selectForm);
 		}
 		if(selectTerm && selectTerm=="3-3") {
-			if(directLatlng) jQuery.directMarker(directLatlng);
-			jQuery('#sort_div').hide('fast');
-			jQuery('#search_div').hide('fast');
-			jQuery('#polyline_div').hide('fast');
+			if(directLatlng) $.directMarker(directLatlng);
+			$('#sort_div').hide('fast');
+			$('#search_div').hide('fast');
+			$('#polyline_div').hide('fast');
 		} else {
-			jQuery('#sort_div').show('fast');
-			jQuery('#search_div').show('fast');
-			jQuery('#polyline_div').show('fast');
+			$('#sort_div').show('fast');
+			$('#search_div').show('fast');
+			$('#polyline_div').show('fast');
 		}
 	};
 
-	jQuery.createMarker = function(latlng, title, content, zIn) {
+	$.createMarker = function(latlng, title, content, zIn) {
 		var titleBuf = title;
 		var contentBuf = content;
 		// for(var i=0; i<markerList.length; i++) {
@@ -231,26 +232,26 @@
 			infowindow.open(map, marker);
 			preInfowindow = infowindow;
 			preMarker = marker;
-			jQuery('#marker_div select').blur();
+			$('#marker_div select').blur();
 		});
-		if(jQuery('#polyline').is(':checked')) polyPath.getPath().insertAt(pathCnt++, latlng);
+		if($('#polyline').is(':checked')) polyPath.getPath().insertAt(pathCnt++, latlng);
 		markerList.push(marker);
 		infowindowList.push(infowindow);
 	};
 
-	jQuery.fn.sortToggle = function() {
-		if(jQuery('#sort1').is(':checked')) {
-			jQuery('#sort2').prop('checked', true);
-			jQuery('#search_button').attr('disabled', false);
-			jQuery('#search_button').removeAttr('disabled');
+	$.fn.sortToggle = function() {
+		if($('#sort1').is(':checked')) {
+			$('#sort2').prop('checked', true);
+			$('#search_button').attr('disabled', false);
+			$('#search_button').removeAttr('disabled');
 		} else {
-			jQuery('#sort1').prop('checked', true);
-			jQuery('#search_button').attr('disabled', true);
+			$('#sort1').prop('checked', true);
+			$('#search_button').attr('disabled', true);
 		}
-		jQuery(this).markerToggle();
+		$(this).markerToggle();
 	};
 
-	jQuery.fn.markerToggle = function(term) {
+	$.fn.markerToggle = function(term) {
 		if(term) selectTerm = term;
 		// while(markerList.getLength()>0) markerList.pop().setVisible(false);
 		// while(infowindowList.getLength()>0) infowindowList.pop().close();
@@ -262,13 +263,13 @@
 		markerList.clear();
 		infowindowList.clear();
 		polyPath.getPath().clear();
-		if(selectTerm!="2-2") jQuery(this).loadMarker();
+		if(selectTerm!="2-2") $(this).loadMarker();
 	};
 
-	jQuery.fn.polylineToggle = function() {
-		if(jQuery('#polyline').is(':checked')) {
+	$.fn.polylineToggle = function() {
+		if($('#polyline').is(':checked')) {
 			if(markerList.getLength()<=0) {
-				jQuery(this).loadMarker();
+				$(this).loadMarker();
 			}
 			for(var i=0; i<markerList.getLength(); i++) {
 				var latlng = markerList.getAt(i).getPosition();
@@ -281,8 +282,8 @@
 		}
 	};
 
-	jQuery.fn.screenToggle = function() {
-		if(jQuery('#screen').is(':checked')) {
+	$.fn.screenToggle = function() {
+		if($('#screen').is(':checked')) {
 			var latlng = map.getCenter();
 			thisElem.css('position', 'fixed');
 			thisElem.css('top', '0px');
@@ -303,17 +304,17 @@
 		}
 	};
 
-	jQuery.fn.tabToggle = function() {
-		if(jQuery('#screennavi').css('right')=='0px') {
-				jQuery('#screennavi').animate({right: '-'+(jQuery('#screennavi').width()-50)+'px', bottom: '-'+(jQuery('#screennavi').height()-17)+'px'}, 200);
-				jQuery('#navitab a').text('◆ 開く');
+	$.fn.tabToggle = function() {
+		if($('#screennavi').css('right')=='0px') {
+				$('#screennavi').animate({right: '-'+($('#screennavi').width()-50)+'px', bottom: '-'+($('#screennavi').height()-17)+'px'}, 200);
+				$('#navitab a').text('◆ 開く');
 		} else {
-				jQuery('#screennavi').animate({right: '0px', bottom: '0px'}, 200);
-				jQuery('#navitab a').text('◇ 閉じる');
+				$('#screennavi').animate({right: '0px', bottom: '0px'}, 200);
+				$('#navitab a').text('◇ 閉じる');
 		}
 	};
 
-	jQuery.fn.slideMarker = function(zIn) {
+	$.fn.slideMarker = function(zIn) {
 		var minZIn = markerList.getAt(0).getZIndex();
 		var maxZIn = markerList.getAt(markerList.length-1).getZIndex();
 		if(zIn<minZIn) zIn = maxZIn;
@@ -332,7 +333,7 @@
 		}
 	};
 
-	jQuery.directMarker = function(latlng) {
+	$.directMarker = function(latlng) {
 		for(var i=0; i<markerList.length; i++) {
 			if(markerList.getAt(i).getPosition().lat()==latlng.lat()
 				&& markerList.getAt(i).getPosition().lng()==latlng.lng()) {
@@ -348,9 +349,9 @@
 		}
 	};
 
-	jQuery.fn.getCurrentPosition = function() {
-		jQuery('#current_button').attr('disabled', true);
-		jQuery('#current_div').append(' <img src="indi.gif" alt="読み込み中..." width="10" height="10" />');
+	$.fn.getCurrentPosition = function() {
+		$('#current_button').attr('disabled', true);
+		$('#current_div').append(' <img src="img/indi.gif" alt="読み込み中..." width="10" height="10" />');
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -360,19 +361,19 @@
 			//		content: '現在地',
 			//	});
 				map.panTo(pos);
-				jQuery('#current_button').attr('disabled', false);
-				jQuery('#current_button').removeAttr('disabled');
-				jQuery('#current_div > img').remove();
+				$('#current_button').attr('disabled', false);
+				$('#current_button').removeAttr('disabled');
+				$('#current_div > img').remove();
 			},
 			function() {
-				jQuery('#current_button').attr('disabled', false);
-				jQuery('#current_button').removeAttr('disabled');
-				jQuery('#current_div > img').remove();
+				$('#current_button').attr('disabled', false);
+				$('#current_button').removeAttr('disabled');
+				$('#current_div > img').remove();
 			});
 		} else {
-			jQuery('#current_button').attr('disabled', false);
-			jQuery('#current_button').removeAttr('disabled');
-			jQuery('#current_div > img').remove();
+			$('#current_button').attr('disabled', false);
+			$('#current_button').removeAttr('disabled');
+			$('#current_div > img').remove();
 		}
 	};
 })(jQuery);
