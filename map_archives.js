@@ -142,12 +142,14 @@
 			if(item['lat']=="" || item['lng']=="") {
 				continue;
 			}
+			var datetime = item["datetime"].split(' ')[0].replace(/-0/g, '-');
+			var dateandtitle = datetime+' '+item['title'];
 			var ymKey = item['datetime'].split('-')[0]+'-'+item['datetime'].split('-')[1];
 			yearMonthMap[ymKey] = +(yearMonthMap[ymKey]) || 0;
 			yearMonthMap[ymKey]++;
 			var itemContent = '<div id="seq_marker" seq="'+seq+'" style="height:80px; width:200px; overflow:auto;">';
 			itemContent += '<div>[ <a href="" onclick="$(this).slideMarker('+(seq+1)+');return false;">←</a> ] [ <a href="" onclick="$(this).slideMarker('+(seq-1)+');return false;">→</a> ]</div>';
-			itemContent += '<a href="'+item['link']+'" target="_blank"><img class="widget-img-thumb" src="'+item['thumbnail']+'" height="45" width="45" alt="'+item['title']+'" title="'+item['title']+'" /></a>';
+			itemContent += '<a href="'+item['link']+'" target="_blank"><img class="widget-img-thumb" src="'+item['thumbnail']+'" height="45" width="45" alt="'+dateandtitle+'" title="'+dateandtitle+'" /></a>';
 			itemContent += '<a href="'+item['link']+'" target="_blank">'+item['title']+'</a><br />';
 			itemContent += '</div>';
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==ymKey || selectTerm=="3-3")) {
@@ -155,14 +157,14 @@
 				if(!centerLatlng) centerLatlng = latlng;
 				if(selectTerm=="3-3") {
 					if(directLatlng.lat()==latlng.lat() && directLatlng.lng()==latlng.lng()) {
-						$.createMarker(latlng, item['title'], itemContent, seq++);
+						$.createMarker(latlng, dateandtitle, itemContent, seq++);
 						if(seq==1 && !selectForm) {
 						 	$('title').append(": "+item['title']);
 						 	$('.archive-header').append(": "+item['title']);
 						}
 					}
 				} else if(!(selectTerm=="0-0" && i>=10) && !(selectTerm=="4-4" && i>=100)) {
-					$.createMarker(latlng, item['title'], itemContent, seq++);
+					$.createMarker(latlng, dateandtitle, itemContent, seq++);
 				}
 			}
 		}
