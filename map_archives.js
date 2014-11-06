@@ -149,8 +149,8 @@
 			yearMonthMap[ymKey]++;
 			var itemContent = '<div id="seq_marker" seq="'+seq+'" style="height:80px; width:200px; overflow:auto;">';
 			itemContent += '<div>[ <a href="" onclick="$(this).slideMarker('+(seq+1)+');return false;">←</a> ] [ <a href="" onclick="$(this).slideMarker('+(seq-1)+');return false;">→</a> ]</div>';
-			itemContent += '<a href="'+item['link']+'" target="_blank"><img class="widget-img-thumb" src="'+item['thumbnail']+'" height="45" width="45" alt="'+dateandtitle+'" title="'+dateandtitle+'" /></a>';
-			itemContent += '<a href="'+item['link']+'" target="_blank">'+item['title']+'</a><br />';
+			itemContent += '<a href="'+item['link']+'" target="_blank"><img class="widget-img-thumb" src="'+item['thumbnail']+'" height="45" width="45" alt="'+item['thumbnail']+'" title="'+dateandtitle+'" /></a>';
+			itemContent += '<a href="'+item['link']+'" target="_blank" title="'+dateandtitle+'">'+item['title']+'</a><br />';
 			itemContent += '</div>';
 			if(selectTerm && (selectTerm=="0-0" || selectTerm=="4-4" || selectTerm=="1-1" || selectTerm==ymKey || selectTerm=="3-3")) {
 				var latlng = new google.maps.LatLng(item['lat'], item['lng']);
@@ -261,7 +261,7 @@
 		// while(path.getLength()>0) path.pop();
 		markerList.forEach(function(marker, i){
         	marker.setMap(null);
-    	}); 
+    	});
 		markerList.clear();
 		infowindowList.clear();
 		polyPath.getPath().clear();
