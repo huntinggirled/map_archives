@@ -138,6 +138,9 @@
 		}
 		var seq = 0;
 		for(var i = 0; i < items.length; i++) {
+			if(!Object.keys(items[i]).length) {
+				continue;
+			}
 			var item = items[i];
 			if(item['lat']=="" || item['lng']=="") {
 				continue;
