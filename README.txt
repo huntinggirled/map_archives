@@ -1,2 +1,2 @@
-ハンチングクリップ: マップアーカイブ
-http://clip.girled.net/map_archives.html
+ハンチングガールド マップアーカイブ
+https://girled.net/map_archives.html
