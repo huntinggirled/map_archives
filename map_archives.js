@@ -62,7 +62,10 @@
 	});
 	polyPath.setMap(map);
 	var pathCnt = 0;
-	var preInfowindow = new google.maps.InfoWindow();
+	var preInfowindowOpts = {
+		headerDisabled: true
+	} 
+	var preInfowindow = new google.maps.InfoWindow(preInfowindowOpts);
 	var preMarker = new google.maps.Marker();
 	var markerList = new google.maps.MVCArray();
 	var infowindowList = new google.maps.MVCArray();
@@ -222,10 +225,12 @@
 				title: titleBuf,
 				zIndex: zIn
 		});
-		var infowindow = new google.maps.InfoWindow({
-			content: contentBuf
-			,zIndex: 10000
-		});
+		var preInfowindowOpts = {
+			headerDisabled: true,
+			content: contentBuf,
+			zIndex: 10000
+		} 
+		var infowindow = new google.maps.InfoWindow(preInfowindowOpts);
 		google.maps.event.addListener(marker, 'click', function() {
 			preInfowindow.close();
 			if(preMarker.getPosition()
@@ -360,11 +365,13 @@
 		if(navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-			//	var infowindow = new google.maps.InfoWindow({
+			//	var preInfowindowOpts = {
+			//		headerDisabled: true,
 			//		map: map,
 			//		position: pos,
-			//		content: '現在地',
-			//	});
+			//		content: '現在地'
+			//	} 
+			//	var infowindow = new google.maps.InfoWindow(preInfowindowOpts);
 				map.panTo(pos);
 				$('#current_button').attr('disabled', false);
 				$('#current_button').removeAttr('disabled');
